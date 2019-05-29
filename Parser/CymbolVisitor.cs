@@ -38,6 +38,12 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitProgram([NotNull] CymbolParser.ProgramContext context);
 	/// <summary>
+	/// Visit a parse tree produced by <see cref="CymbolParser.stmts"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitStmts([NotNull] CymbolParser.StmtsContext context);
+	/// <summary>
 	/// Visit a parse tree produced by <see cref="CymbolParser.stmt"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -104,12 +110,12 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAddsub([NotNull] CymbolParser.AddsubContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>printString</c>
+	/// Visit a parse tree produced by the <c>if</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitPrintString([NotNull] CymbolParser.PrintStringContext context);
+	Result VisitIf([NotNull] CymbolParser.IfContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>int</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.

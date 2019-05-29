@@ -14,6 +14,10 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         _stack.Push(new Dictionary<string, ICymbolObject>());
     }
 
+    public override ICymbolObject VisitStmts(CymbolParser.StmtsContext context) {
+        return context.stmt()?.Select(Visit).ToArray().LastOrDefault() ?? CymbolObject.Unit;
+    }
+
     public override ICymbolObject VisitDeclaration(CymbolParser.DeclarationContext context)
     {
         var typeName = context.type().GetText();
@@ -48,6 +52,10 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(bool.Parse(context.BOOL().GetText()));
     }
 
+    public override ICymbolObject VisitString(CymbolParser.StringContext context) {
+        return CymbolObject.From(context.STRING().GetText());
+    }
+
     public override ICymbolObject VisitMuldiv(CymbolParser.MuldivContext context)
     {
         var operands = context.expr().Select(Visit).Cast<CymbolObject<int>>().ToArray();
@@ -70,14 +78,21 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
     public override ICymbolObject VisitPrint(CymbolParser.PrintContext context)
     {
-        Console.WriteLine(Visit(context.expr())?.ObjectValue);
+        var expr = context.expr();
+        var value = expr != null ? Visit(expr) : null;
+        Console.WriteLine(value?.ObjectValue);
         return CymbolObject.Unit;
     }
 
-    public override ICymbolObject VisitPrintString(CymbolParser.PrintStringContext context)
+    public override ICymbolObject VisitIf(CymbolParser.IfContext context)
     {
-        var str = context.STRING()?.GetText();
-        Console.WriteLine(str?.Substring(1, str.Length - 2));
+        var condition = (Visit(context.expr()) as CymbolObject<bool>)?.Value ?? null;
+        if (condition == null) {
+            throw new Exception("If conditions must be a 'bool' type.");
+        }
+        if (condition.Value) {
+            return Visit(context.stmts());
+        }
         return CymbolObject.Unit;
     }
 

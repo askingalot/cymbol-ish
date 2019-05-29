@@ -1,6 +1,8 @@
 grammar Cymbol;
 
-program : (stmt ';')* EOF ;
+program : stmts EOF ;
+
+stmts : (stmt ';')* ;
 
 stmt : declaration
      | function
@@ -15,8 +17,8 @@ function : 'fun' ID '(' (ID (',' ID)*)? ')' '{' (stmt ';')* '}' ;
 
 expr : expr op=('*'|'/') expr           # muldiv
      | expr op=('+'|'-') expr           # addsub
-     | 'print' '(' expr ')'             # print
-     | 'print' '(' STRING? ')'          # printString
+     | 'print' '(' expr? ')'            # print
+     | 'if' '(' expr ')' '{' stmts '}'  # if
      | ID '(' (expr (',' expr)*)? ')'   # call
      | INT                              # int
      | BOOL                             # bool
