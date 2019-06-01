@@ -86,7 +86,7 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
     public override ICymbolObject VisitIf(CymbolParser.IfContext context)
     {
-        var condition = (Visit(context.expr()) as CymbolObject<bool>)?.Value ?? null;
+        var condition = (Visit(context.expr()) as CymbolObject<bool>)?.Value;
         if (condition == null) {
             throw new Exception("If conditions must be a 'bool' type.");
         }
