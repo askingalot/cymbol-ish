@@ -90,9 +90,14 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         if (condition == null) {
             throw new Exception("If conditions must be a 'bool' type.");
         }
+
+        var blocks = context.stmts();
         if (condition.Value) {
-            return Visit(context.stmts());
+            return Visit(blocks[0]);
+        } else if (blocks.Length > 1) { // we have an else block
+            return Visit(blocks[1]);
         }
+
         return CymbolObject.Unit;
     }
 

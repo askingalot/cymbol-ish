@@ -37,8 +37,9 @@ public partial class CymbolParser : Parser {
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, MUL=14, DIV=15, ADD=16, SUB=17, 
-		INT=18, BOOL=19, STRING=20, ID=21, COMMENT=22, ML_COMMENT=23, WS=24;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, MUL=15, DIV=16, ADD=17, 
+		SUB=18, INT=19, BOOL=20, STRING=21, ID=22, COMMENT=23, ML_COMMENT=24, 
+		WS=25;
 	public const int
 		RULE_program = 0, RULE_stmts = 1, RULE_stmt = 2, RULE_declaration = 3, 
 		RULE_type = 4, RULE_function = 5, RULE_expr = 6;
@@ -48,12 +49,13 @@ public partial class CymbolParser : Parser {
 
 	private static readonly string[] _LiteralNames = {
 		null, "';'", "'='", "'int'", "'bool'", "'string'", "'fun'", "'('", "','", 
-		"')'", "'{'", "'}'", "'print'", "'if'", "'*'", "'/'", "'+'", "'-'"
+		"')'", "'{'", "'}'", "'print'", "'if'", "'else'", "'*'", "'/'", "'+'", 
+		"'-'"
 	};
 	private static readonly string[] _SymbolicNames = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, "MUL", "DIV", "ADD", "SUB", "INT", "BOOL", "STRING", "ID", 
-		"COMMENT", "ML_COMMENT", "WS"
+		null, null, null, "MUL", "DIV", "ADD", "SUB", "INT", "BOOL", "STRING", 
+		"ID", "COMMENT", "ML_COMMENT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -510,8 +512,11 @@ public partial class CymbolParser : Parser {
 		public ExprContext expr() {
 			return GetRuleContext<ExprContext>(0);
 		}
-		public StmtsContext stmts() {
-			return GetRuleContext<StmtsContext>(0);
+		public StmtsContext[] stmts() {
+			return GetRuleContexts<StmtsContext>();
+		}
+		public StmtsContext stmts(int i) {
+			return GetRuleContext<StmtsContext>(i);
 		}
 		public IfContext(ExprContext context) { CopyFrom(context); }
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
@@ -564,9 +569,9 @@ public partial class CymbolParser : Parser {
 			int _alt;
 			EnterOuterAlt(_localctx, 1);
 			{
-			State = 94;
+			State = 100;
 			ErrorHandler.Sync(this);
-			switch ( Interpreter.AdaptivePredict(TokenStream,8,Context) ) {
+			switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
 			case 1:
 				{
 				_localctx = new PrintContext(_localctx);
@@ -599,6 +604,18 @@ public partial class CymbolParser : Parser {
 				State = 73; Match(T__9);
 				State = 74; stmts();
 				State = 75; Match(T__10);
+				State = 81;
+				ErrorHandler.Sync(this);
+				switch ( Interpreter.AdaptivePredict(TokenStream,6,Context) ) {
+				case 1:
+					{
+					State = 76; Match(T__13);
+					State = 77; Match(T__9);
+					State = 78; stmts();
+					State = 79; Match(T__10);
+					}
+					break;
+				}
 				}
 				break;
 			case 3:
@@ -606,32 +623,32 @@ public partial class CymbolParser : Parser {
 				_localctx = new CallContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 77; Match(ID);
-				State = 78; Match(T__6);
-				State = 87;
+				State = 83; Match(ID);
+				State = 84; Match(T__6);
+				State = 93;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__11) | (1L << T__12) | (1L << INT) | (1L << BOOL) | (1L << STRING) | (1L << ID))) != 0)) {
 					{
-					State = 79; expr(0);
-					State = 84;
+					State = 85; expr(0);
+					State = 90;
 					ErrorHandler.Sync(this);
 					_la = TokenStream.LA(1);
 					while (_la==T__7) {
 						{
 						{
-						State = 80; Match(T__7);
-						State = 81; expr(0);
+						State = 86; Match(T__7);
+						State = 87; expr(0);
 						}
 						}
-						State = 86;
+						State = 92;
 						ErrorHandler.Sync(this);
 						_la = TokenStream.LA(1);
 					}
 					}
 				}
 
-				State = 89; Match(T__8);
+				State = 95; Match(T__8);
 				}
 				break;
 			case 4:
@@ -639,7 +656,7 @@ public partial class CymbolParser : Parser {
 				_localctx = new IntContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 90; Match(INT);
+				State = 96; Match(INT);
 				}
 				break;
 			case 5:
@@ -647,7 +664,7 @@ public partial class CymbolParser : Parser {
 				_localctx = new BoolContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 91; Match(BOOL);
+				State = 97; Match(BOOL);
 				}
 				break;
 			case 6:
@@ -655,7 +672,7 @@ public partial class CymbolParser : Parser {
 				_localctx = new StringContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 92; Match(STRING);
+				State = 98; Match(STRING);
 				}
 				break;
 			case 7:
@@ -663,30 +680,30 @@ public partial class CymbolParser : Parser {
 				_localctx = new VariableContext(_localctx);
 				Context = _localctx;
 				_prevctx = _localctx;
-				State = 93; Match(ID);
+				State = 99; Match(ID);
 				}
 				break;
 			}
 			Context.Stop = TokenStream.LT(-1);
-			State = 104;
+			State = 110;
 			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
+			_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
 			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( ParseListeners!=null )
 						TriggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					State = 102;
+					State = 108;
 					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
+					switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
 					case 1:
 						{
 						_localctx = new MuldivContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 96;
+						State = 102;
 						if (!(Precpred(Context, 9))) throw new FailedPredicateException(this, "Precpred(Context, 9)");
-						State = 97;
+						State = 103;
 						((MuldivContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==MUL || _la==DIV) ) {
@@ -696,16 +713,16 @@ public partial class CymbolParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 98; expr(10);
+						State = 104; expr(10);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new AddsubContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 99;
+						State = 105;
 						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
-						State = 100;
+						State = 106;
 						((AddsubContext)_localctx).op = TokenStream.LT(1);
 						_la = TokenStream.LA(1);
 						if ( !(_la==ADD || _la==SUB) ) {
@@ -715,15 +732,15 @@ public partial class CymbolParser : Parser {
 							ErrorHandler.ReportMatch(this);
 						    Consume();
 						}
-						State = 101; expr(9);
+						State = 107; expr(9);
 						}
 						break;
 					}
 					} 
 				}
-				State = 106;
+				State = 112;
 				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,10,Context);
+				_alt = Interpreter.AdaptivePredict(TokenStream,11,Context);
 			}
 			}
 		}
@@ -754,7 +771,7 @@ public partial class CymbolParser : Parser {
 
 	private static char[] _serializedATN = {
 		'\x3', '\x608B', '\xA72A', '\x8133', '\xB9ED', '\x417C', '\x3BE7', '\x7786', 
-		'\x5964', '\x3', '\x1A', 'n', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
+		'\x5964', '\x3', '\x1B', 't', '\x4', '\x2', '\t', '\x2', '\x4', '\x3', 
 		'\t', '\x3', '\x4', '\x4', '\t', '\x4', '\x4', '\x5', '\t', '\x5', '\x4', 
 		'\x6', '\t', '\x6', '\x4', '\a', '\t', '\a', '\x4', '\b', '\t', '\b', 
 		'\x3', '\x2', '\x3', '\x2', '\x3', '\x2', '\x3', '\x3', '\x3', '\x3', 
@@ -770,18 +787,19 @@ public partial class CymbolParser : Parser {
 		'\b', '\x3', '\b', '\x5', '\b', '\x45', '\n', '\b', '\x3', '\b', '\x3', 
 		'\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', 
 		'\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', 
-		'\b', '\x3', '\b', '\a', '\b', 'U', '\n', '\b', '\f', '\b', '\xE', '\b', 
-		'X', '\v', '\b', '\x5', '\b', 'Z', '\n', '\b', '\x3', '\b', '\x3', '\b', 
-		'\x3', '\b', '\x3', '\b', '\x3', '\b', '\x5', '\b', '\x61', '\n', '\b', 
+		'\b', '\x5', '\b', 'T', '\n', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', 
+		'\x3', '\b', '\x3', '\b', '\a', '\b', '[', '\n', '\b', '\f', '\b', '\xE', 
+		'\b', '^', '\v', '\b', '\x5', '\b', '`', '\n', '\b', '\x3', '\b', '\x3', 
+		'\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x5', '\b', 'g', '\n', '\b', 
 		'\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', '\b', '\x3', 
-		'\b', '\a', '\b', 'i', '\n', '\b', '\f', '\b', '\xE', '\b', 'l', '\v', 
+		'\b', '\a', '\b', 'o', '\n', '\b', '\f', '\b', '\xE', '\b', 'r', '\v', 
 		'\b', '\x3', '\b', '\x2', '\x3', '\xE', '\t', '\x2', '\x4', '\x6', '\b', 
 		'\n', '\f', '\xE', '\x2', '\x5', '\x3', '\x2', '\x5', '\a', '\x3', '\x2', 
-		'\x10', '\x11', '\x3', '\x2', '\x12', '\x13', '\x2', 'w', '\x2', '\x10', 
+		'\x11', '\x12', '\x3', '\x2', '\x13', '\x14', '\x2', '~', '\x2', '\x10', 
 		'\x3', '\x2', '\x2', '\x2', '\x4', '\x18', '\x3', '\x2', '\x2', '\x2', 
 		'\x6', '\x1E', '\x3', '\x2', '\x2', '\x2', '\b', ' ', '\x3', '\x2', '\x2', 
 		'\x2', '\n', '%', '\x3', '\x2', '\x2', '\x2', '\f', '\'', '\x3', '\x2', 
-		'\x2', '\x2', '\xE', '`', '\x3', '\x2', '\x2', '\x2', '\x10', '\x11', 
+		'\x2', '\x2', '\xE', '\x66', '\x3', '\x2', '\x2', '\x2', '\x10', '\x11', 
 		'\x5', '\x4', '\x3', '\x2', '\x11', '\x12', '\a', '\x2', '\x2', '\x3', 
 		'\x12', '\x3', '\x3', '\x2', '\x2', '\x2', '\x13', '\x14', '\x5', '\x6', 
 		'\x4', '\x2', '\x14', '\x15', '\a', '\x3', '\x2', '\x2', '\x15', '\x17', 
@@ -793,13 +811,13 @@ public partial class CymbolParser : Parser {
 		'\a', '\x2', '\x1D', '\x1F', '\x5', '\xE', '\b', '\x2', '\x1E', '\x1B', 
 		'\x3', '\x2', '\x2', '\x2', '\x1E', '\x1C', '\x3', '\x2', '\x2', '\x2', 
 		'\x1E', '\x1D', '\x3', '\x2', '\x2', '\x2', '\x1F', '\a', '\x3', '\x2', 
-		'\x2', '\x2', ' ', '!', '\x5', '\n', '\x6', '\x2', '!', '\"', '\a', '\x17', 
+		'\x2', '\x2', ' ', '!', '\x5', '\n', '\x6', '\x2', '!', '\"', '\a', '\x18', 
 		'\x2', '\x2', '\"', '#', '\a', '\x4', '\x2', '\x2', '#', '$', '\x5', '\xE', 
 		'\b', '\x2', '$', '\t', '\x3', '\x2', '\x2', '\x2', '%', '&', '\t', '\x2', 
 		'\x2', '\x2', '&', '\v', '\x3', '\x2', '\x2', '\x2', '\'', '(', '\a', 
-		'\b', '\x2', '\x2', '(', ')', '\a', '\x17', '\x2', '\x2', ')', '\x32', 
-		'\a', '\t', '\x2', '\x2', '*', '/', '\a', '\x17', '\x2', '\x2', '+', ',', 
-		'\a', '\n', '\x2', '\x2', ',', '.', '\a', '\x17', '\x2', '\x2', '-', '+', 
+		'\b', '\x2', '\x2', '(', ')', '\a', '\x18', '\x2', '\x2', ')', '\x32', 
+		'\a', '\t', '\x2', '\x2', '*', '/', '\a', '\x18', '\x2', '\x2', '+', ',', 
+		'\a', '\n', '\x2', '\x2', ',', '.', '\a', '\x18', '\x2', '\x2', '-', '+', 
 		'\x3', '\x2', '\x2', '\x2', '.', '\x31', '\x3', '\x2', '\x2', '\x2', '/', 
 		'-', '\x3', '\x2', '\x2', '\x2', '/', '\x30', '\x3', '\x2', '\x2', '\x2', 
 		'\x30', '\x33', '\x3', '\x2', '\x2', '\x2', '\x31', '/', '\x3', '\x2', 
@@ -816,34 +834,37 @@ public partial class CymbolParser : Parser {
 		'\x2', '\x2', '\x42', '\x44', '\a', '\t', '\x2', '\x2', '\x43', '\x45', 
 		'\x5', '\xE', '\b', '\x2', '\x44', '\x43', '\x3', '\x2', '\x2', '\x2', 
 		'\x44', '\x45', '\x3', '\x2', '\x2', '\x2', '\x45', '\x46', '\x3', '\x2', 
-		'\x2', '\x2', '\x46', '\x61', '\a', '\v', '\x2', '\x2', 'G', 'H', '\a', 
-		'\xF', '\x2', '\x2', 'H', 'I', '\a', '\t', '\x2', '\x2', 'I', 'J', '\x5', 
-		'\xE', '\b', '\x2', 'J', 'K', '\a', '\v', '\x2', '\x2', 'K', 'L', '\a', 
-		'\f', '\x2', '\x2', 'L', 'M', '\x5', '\x4', '\x3', '\x2', 'M', 'N', '\a', 
-		'\r', '\x2', '\x2', 'N', '\x61', '\x3', '\x2', '\x2', '\x2', 'O', 'P', 
-		'\a', '\x17', '\x2', '\x2', 'P', 'Y', '\a', '\t', '\x2', '\x2', 'Q', 'V', 
-		'\x5', '\xE', '\b', '\x2', 'R', 'S', '\a', '\n', '\x2', '\x2', 'S', 'U', 
-		'\x5', '\xE', '\b', '\x2', 'T', 'R', '\x3', '\x2', '\x2', '\x2', 'U', 
-		'X', '\x3', '\x2', '\x2', '\x2', 'V', 'T', '\x3', '\x2', '\x2', '\x2', 
-		'V', 'W', '\x3', '\x2', '\x2', '\x2', 'W', 'Z', '\x3', '\x2', '\x2', '\x2', 
-		'X', 'V', '\x3', '\x2', '\x2', '\x2', 'Y', 'Q', '\x3', '\x2', '\x2', '\x2', 
-		'Y', 'Z', '\x3', '\x2', '\x2', '\x2', 'Z', '[', '\x3', '\x2', '\x2', '\x2', 
-		'[', '\x61', '\a', '\v', '\x2', '\x2', '\\', '\x61', '\a', '\x14', '\x2', 
-		'\x2', ']', '\x61', '\a', '\x15', '\x2', '\x2', '^', '\x61', '\a', '\x16', 
-		'\x2', '\x2', '_', '\x61', '\a', '\x17', '\x2', '\x2', '`', '@', '\x3', 
-		'\x2', '\x2', '\x2', '`', 'G', '\x3', '\x2', '\x2', '\x2', '`', 'O', '\x3', 
-		'\x2', '\x2', '\x2', '`', '\\', '\x3', '\x2', '\x2', '\x2', '`', ']', 
-		'\x3', '\x2', '\x2', '\x2', '`', '^', '\x3', '\x2', '\x2', '\x2', '`', 
-		'_', '\x3', '\x2', '\x2', '\x2', '\x61', 'j', '\x3', '\x2', '\x2', '\x2', 
-		'\x62', '\x63', '\f', '\v', '\x2', '\x2', '\x63', '\x64', '\t', '\x3', 
-		'\x2', '\x2', '\x64', 'i', '\x5', '\xE', '\b', '\f', '\x65', '\x66', '\f', 
-		'\n', '\x2', '\x2', '\x66', 'g', '\t', '\x4', '\x2', '\x2', 'g', 'i', 
-		'\x5', '\xE', '\b', '\v', 'h', '\x62', '\x3', '\x2', '\x2', '\x2', 'h', 
-		'\x65', '\x3', '\x2', '\x2', '\x2', 'i', 'l', '\x3', '\x2', '\x2', '\x2', 
-		'j', 'h', '\x3', '\x2', '\x2', '\x2', 'j', 'k', '\x3', '\x2', '\x2', '\x2', 
-		'k', '\xF', '\x3', '\x2', '\x2', '\x2', 'l', 'j', '\x3', '\x2', '\x2', 
-		'\x2', '\r', '\x18', '\x1E', '/', '\x32', ';', '\x44', 'V', 'Y', '`', 
-		'h', 'j',
+		'\x2', '\x2', '\x46', 'g', '\a', '\v', '\x2', '\x2', 'G', 'H', '\a', '\xF', 
+		'\x2', '\x2', 'H', 'I', '\a', '\t', '\x2', '\x2', 'I', 'J', '\x5', '\xE', 
+		'\b', '\x2', 'J', 'K', '\a', '\v', '\x2', '\x2', 'K', 'L', '\a', '\f', 
+		'\x2', '\x2', 'L', 'M', '\x5', '\x4', '\x3', '\x2', 'M', 'S', '\a', '\r', 
+		'\x2', '\x2', 'N', 'O', '\a', '\x10', '\x2', '\x2', 'O', 'P', '\a', '\f', 
+		'\x2', '\x2', 'P', 'Q', '\x5', '\x4', '\x3', '\x2', 'Q', 'R', '\a', '\r', 
+		'\x2', '\x2', 'R', 'T', '\x3', '\x2', '\x2', '\x2', 'S', 'N', '\x3', '\x2', 
+		'\x2', '\x2', 'S', 'T', '\x3', '\x2', '\x2', '\x2', 'T', 'g', '\x3', '\x2', 
+		'\x2', '\x2', 'U', 'V', '\a', '\x18', '\x2', '\x2', 'V', '_', '\a', '\t', 
+		'\x2', '\x2', 'W', '\\', '\x5', '\xE', '\b', '\x2', 'X', 'Y', '\a', '\n', 
+		'\x2', '\x2', 'Y', '[', '\x5', '\xE', '\b', '\x2', 'Z', 'X', '\x3', '\x2', 
+		'\x2', '\x2', '[', '^', '\x3', '\x2', '\x2', '\x2', '\\', 'Z', '\x3', 
+		'\x2', '\x2', '\x2', '\\', ']', '\x3', '\x2', '\x2', '\x2', ']', '`', 
+		'\x3', '\x2', '\x2', '\x2', '^', '\\', '\x3', '\x2', '\x2', '\x2', '_', 
+		'W', '\x3', '\x2', '\x2', '\x2', '_', '`', '\x3', '\x2', '\x2', '\x2', 
+		'`', '\x61', '\x3', '\x2', '\x2', '\x2', '\x61', 'g', '\a', '\v', '\x2', 
+		'\x2', '\x62', 'g', '\a', '\x15', '\x2', '\x2', '\x63', 'g', '\a', '\x16', 
+		'\x2', '\x2', '\x64', 'g', '\a', '\x17', '\x2', '\x2', '\x65', 'g', '\a', 
+		'\x18', '\x2', '\x2', '\x66', '@', '\x3', '\x2', '\x2', '\x2', '\x66', 
+		'G', '\x3', '\x2', '\x2', '\x2', '\x66', 'U', '\x3', '\x2', '\x2', '\x2', 
+		'\x66', '\x62', '\x3', '\x2', '\x2', '\x2', '\x66', '\x63', '\x3', '\x2', 
+		'\x2', '\x2', '\x66', '\x64', '\x3', '\x2', '\x2', '\x2', '\x66', '\x65', 
+		'\x3', '\x2', '\x2', '\x2', 'g', 'p', '\x3', '\x2', '\x2', '\x2', 'h', 
+		'i', '\f', '\v', '\x2', '\x2', 'i', 'j', '\t', '\x3', '\x2', '\x2', 'j', 
+		'o', '\x5', '\xE', '\b', '\f', 'k', 'l', '\f', '\n', '\x2', '\x2', 'l', 
+		'm', '\t', '\x4', '\x2', '\x2', 'm', 'o', '\x5', '\xE', '\b', '\v', 'n', 
+		'h', '\x3', '\x2', '\x2', '\x2', 'n', 'k', '\x3', '\x2', '\x2', '\x2', 
+		'o', 'r', '\x3', '\x2', '\x2', '\x2', 'p', 'n', '\x3', '\x2', '\x2', '\x2', 
+		'p', 'q', '\x3', '\x2', '\x2', '\x2', 'q', '\xF', '\x3', '\x2', '\x2', 
+		'\x2', 'r', 'p', '\x3', '\x2', '\x2', '\x2', '\xE', '\x18', '\x1E', '/', 
+		'\x32', ';', '\x44', 'S', '\\', '_', '\x66', 'n', 'p',
 	};
 
 	public static readonly ATN _ATN =

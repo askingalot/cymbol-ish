@@ -12,13 +12,15 @@ print(4 / 2);
 int num = 100;
 //int num = false;
 
-bool isTrue = true;
+bool isTrue = false;
 //bool fail = 22;
 
 print(isTrue);
 
 if (isTrue) {
     print("It's True");
+} else {
+    print("It's False");
 };
 
 fun timesFour(num) {
