@@ -15,22 +15,29 @@ type : 'int' | 'bool' | 'string' ;
 
 function : 'fun' ID '(' (ID (',' ID)*)? ')' '{' (stmt ';')* '}' ;
 
-expr : expr op=('*'|'/') expr           # muldiv
-     | expr op=('+'|'-') expr           # addsub
-     | 'print' '(' expr? ')'            # print
+expr : expr op=('*'|'/') expr                     # muldiv
+     | expr op=('+'|'-') expr                     # addsub
+     | expr op=('<'|'>'|'<='|'>='|'=='|'!=') expr # rel
+     | 'print' '(' expr? ')'                      # print
      | 'if' '(' expr ')' '{' stmts '}'  
-       ('else' '{' stmts '}')?          # if
-     | ID '(' (expr (',' expr)*)? ')'   # call
-     | INT                              # int
-     | BOOL                             # bool
-     | STRING                           # string
-     | ID                               # variable
+       ('else' '{' stmts '}')?                    # if
+     | ID '(' (expr (',' expr)*)? ')'             # call
+     | INT                                        # int
+     | BOOL                                       # bool
+     | STRING                                     # string
+     | ID                                         # variable
      ;
 
-MUL : '*' ;
-DIV : '/' ;
-ADD : '+' ;
-SUB : '-' ;
+MUL : '*'  ;
+DIV : '/'  ;
+ADD : '+'  ;
+SUB : '-'  ;
+GT  : '>'  ;
+GE  : '>=' ;
+LT  : '<'  ;
+LE  : '<=' ;
+EQ  : '==' ;
+NE  : '!=' ;
 
 INT : [0-9]+ ;
 

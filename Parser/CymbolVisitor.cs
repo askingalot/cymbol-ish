@@ -103,6 +103,13 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitVariable([NotNull] CymbolParser.VariableContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>rel</c>
+	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitRel([NotNull] CymbolParser.RelContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>addsub</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.
 	/// </summary>

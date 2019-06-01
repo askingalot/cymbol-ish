@@ -14,7 +14,8 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         _stack.Push(new Dictionary<string, ICymbolObject>());
     }
 
-    public override ICymbolObject VisitStmts(CymbolParser.StmtsContext context) {
+    public override ICymbolObject VisitStmts(CymbolParser.StmtsContext context)
+    {
         return context.stmt()?.Select(Visit).ToArray().LastOrDefault() ?? CymbolObject.Unit;
     }
 
@@ -52,7 +53,8 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(bool.Parse(context.BOOL().GetText()));
     }
 
-    public override ICymbolObject VisitString(CymbolParser.StringContext context) {
+    public override ICymbolObject VisitString(CymbolParser.StringContext context)
+    {
         return CymbolObject.From(context.STRING().GetText());
     }
 
@@ -76,6 +78,83 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(result);
     }
 
+    public override ICymbolObject VisitRel(CymbolParser.RelContext context)
+    {
+        var operands = context.expr().Select(Visit).ToArray();
+        if (operands[0].Type != operands[1].Type)
+        {
+            throw new Exception(
+                $"Cannot compare expressions of different types. ({context.Start.Line}:{context.Start.Column})");
+        }
+        var op = context.op;
+        switch (operands[0])
+        {
+            case CymbolObject<int> lint:
+                var rint = (CymbolObject<int>)operands[1];
+                switch (op.Type)
+                {
+                    case CymbolParser.EQ:
+                        return CymbolObject.From(lint.Value == rint.Value);
+                    case CymbolParser.NE:
+                        return CymbolObject.From(lint.Value != rint.Value);
+                    case CymbolParser.GT:
+                        return CymbolObject.From(lint.Value > rint.Value);
+                    case CymbolParser.GE:
+                        return CymbolObject.From(lint.Value >= rint.Value);
+                    case CymbolParser.LT:
+                        return CymbolObject.From(lint.Value < rint.Value);
+                    case CymbolParser.LE:
+                        return CymbolObject.From(lint.Value <= rint.Value);
+                    default:
+                        throw new Exception($"Unexpected operator {op.Text} ({op.Line}:{op.Column})");
+                }
+            case CymbolObject<bool> lbool:
+                var rbool = (CymbolObject<bool>)operands[1];
+                switch (op.Type)
+                {
+                    case CymbolParser.EQ:
+                        return CymbolObject.From(lbool.Value == rbool.Value);
+                    case CymbolParser.NE:
+                        return CymbolObject.From(lbool.Value != rbool.Value);
+                    case CymbolParser.GT:
+                        // true > false
+                        return CymbolObject.From(lbool.Value == true && rbool.Value == false);
+                    case CymbolParser.GE:
+                        // false >= false and true >= true and true >= false
+                        return CymbolObject.From(lbool.Value == rbool.Value || lbool.Value == true);
+                    case CymbolParser.LT:
+                        // false < true
+                        return CymbolObject.From(lbool.Value == false && rbool.Value == true);
+                    case CymbolParser.LE:
+                        // false >= false and true >= true and false <= true
+                        return CymbolObject.From(lbool.Value == rbool.Value || lbool.Value == false);
+                    default:
+                        throw new Exception($"Unexpected operator {op.Text} ({op.Line}:{op.Column})");
+                }
+            case CymbolObject<string> lstring:
+                var rstring = (CymbolObject<string>)operands[1];
+                switch (op.Type)
+                {
+                    case CymbolParser.EQ:
+                        return CymbolObject.From(lstring.Value == rstring.Value);
+                    case CymbolParser.NE:
+                        return CymbolObject.From(lstring.Value != rstring.Value);
+                    case CymbolParser.GT:
+                        return CymbolObject.From(string.Compare(lstring.Value, rstring.Value) > 0);
+                    case CymbolParser.GE:
+                        return CymbolObject.From(string.Compare(lstring.Value, rstring.Value) >= 0);
+                    case CymbolParser.LT:
+                        return CymbolObject.From(string.Compare(lstring.Value, rstring.Value) < 0);
+                    case CymbolParser.LE:
+                        return CymbolObject.From(string.Compare(lstring.Value, rstring.Value) <= 0);
+                    default:
+                        throw new Exception($"Unexpected operator {op.Text} ({op.Line}:{op.Column})");
+                }
+            default:
+                throw new Exception($"Unknown error ({context.Start.Line}:{context.Start.Column})");
+        }
+    }
+
     public override ICymbolObject VisitPrint(CymbolParser.PrintContext context)
     {
         var expr = context.expr();
@@ -87,14 +166,18 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
     public override ICymbolObject VisitIf(CymbolParser.IfContext context)
     {
         var condition = (Visit(context.expr()) as CymbolObject<bool>)?.Value;
-        if (condition == null) {
+        if (condition == null)
+        {
             throw new Exception("If conditions must be a 'bool' type.");
         }
 
         var blocks = context.stmts();
-        if (condition.Value) {
+        if (condition.Value)
+        {
             return Visit(blocks[0]);
-        } else if (blocks.Length > 1) { // we have an else block
+        }
+        else if (blocks.Length > 1)
+        { // we have an else block
             return Visit(blocks[1]);
         }
 
@@ -124,6 +207,7 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
         return result;
     }
+
 }
 
 
