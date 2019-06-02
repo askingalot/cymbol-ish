@@ -45,7 +45,7 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
     public override ICymbolObject VisitInt(CymbolParser.IntContext context)
     {
-        return CymbolObject.From(int.Parse(context.INT().GetText()));
+        return CymbolObject.From(int.Parse(context.INT().GetText().Replace("_", "")));
     }
 
     public override ICymbolObject VisitBool(CymbolParser.BoolContext context)

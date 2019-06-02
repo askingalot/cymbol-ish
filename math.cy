@@ -1,4 +1,4 @@
-print(-242);
+print(-24_200);
 print(-1 * 2);
 print(0 + -1);
 
@@ -8,4 +8,4 @@ print(-a);
 int b = a * -1;
 print(b / 12);
 
-print(400 / -0);
+//print(400 / -0);
