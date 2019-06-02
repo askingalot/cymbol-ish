@@ -25,3 +25,4 @@ Really this is just a concrete way for me to play with the concepts in the book.
 * `len()` and `range()` are built-in functions, `print()` is technically a keyword
 * Code is allowed outside of a function
 * No closures. Each scope is independent
+* If you want syntax highlighting for `*.cy` files, `go` and `swift` highlighting seem to work pretty well.
