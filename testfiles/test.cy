@@ -2,12 +2,10 @@
 // It's also not at all complete. It's just a place to practice some language building.
 
 int a = 2;
-/*
 print(a * a / a);
 print(4 * 4 + a);
 print(2 + 2 * 20);
 print(4 / 2);
-*/
 
 int num = 100;
 //int num = false;
@@ -50,3 +48,17 @@ print("Call the timesFour() Function with 200");
 print(timesFour(200));
 
 print(num);
+
+
+int a1 = 2;
+int b1 = 2;
+
+if (a1 < b1) {
+    print("a1 < b1");
+} else if (a1 == b1) {
+    print("a1 == b1");
+} else if (a1 > b1) {
+    print("a1 > b1");
+} else {
+    print("this can't happen");
+}

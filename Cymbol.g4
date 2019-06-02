@@ -15,24 +15,25 @@ type : 'int' | 'bool' | 'string'  | 'list' ;
 
 function : 'fun' ID '(' (ID (',' ID)*)? ')' '{' (stmt ';')* '}' ;
 
-expr : expr op=('*'|'/') expr                     # muldiv
-     | expr op=('+'|'-') expr                     # addsub
-     | expr op=('<'|'>'|'<='|'>='|'=='|'!=') expr # comp
-     | expr op=('&&'|'||') expr                   # rel
-     | op=('-'|'!') expr                          # negate
-     | 'print' '(' expr? ')'                      # print
+expr : expr op=('*'|'/') expr                      # muldiv
+     | expr op=('+'|'-') expr                      # addsub
+     | expr op=('<'|'>'|'<='|'>='|'=='|'!=') expr  # comp
+     | expr op=('&&'|'||') expr                    # rel
+     | op=('-'|'!') expr                           # negate
+     | 'print' '(' expr? ')'                       # print
      | 'if' '(' expr ')' '{' stmts '}'  
-       ('else' '{' stmts '}')?                    # if
-     | ID '(' (expr (',' expr)*)? ')'             # call
-     | ID '[' expr ']'                            # element
-     | ID                                         # variable
-     | INT                                        # int
-     | BOOL                                       # bool
-     | STRING                                     # string
-     | '[' expr (',' expr)* ']'                   # list
-     | '[' ']'                                    # emptyList
-     | '(' expr ')'                               # paren
-     ;
+       ('else' 'if' '(' expr ')' '{' stmts '}')*
+       ('else' '{' stmts '}')?                     # if
+     | ID '(' (expr (',' expr)*)? ')'              # call
+     | ID '[' expr ']'                             # element
+     | ID                                          # variable
+     | INT                                         # int
+     | BOOL                                        # bool
+     | STRING                                      # string
+     | '[' expr (',' expr)* ']'                    # list
+     | '[' ']'                                     # emptyList
+     | '(' expr ')'                                # paren
+      ;
 
 MUL : '*'  ;
 DIV : '/'  ;

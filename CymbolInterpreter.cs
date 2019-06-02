@@ -246,20 +246,30 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
     public override ICymbolObject VisitIf(CymbolParser.IfContext context)
     {
-        var condition = (Visit(context.expr()) as CymbolObject<bool>)?.Value;
-        if (condition == null)
+        // if, else if, else...
+
+        var conditions = context.expr();
+        var blocks = context.stmts();
+
+        var hasElse = conditions.Length < blocks.Length;
+
+        for (var i = 0; i < conditions.Length; i++)
         {
-            throw new Exception("If conditions must be a 'bool' type.");
+            var condition = (Visit(conditions[i]) as CymbolObject<bool>)?.Value;
+            if (condition == null)
+            {
+                throw new Exception(
+                    $"If conditions must be a 'bool' type ({conditions[i].Start.Line}:{conditions[i].Start.Column})");
+            }
+            if (condition.Value)
+            {
+                return Visit(blocks[i]);
+            }
         }
 
-        var blocks = context.stmts();
-        if (condition.Value)
+        if (hasElse)
         {
-            return Visit(blocks[0]);
-        }
-        else if (blocks.Length > 1)
-        { // we have an else block
-            return Visit(blocks[1]);
+            return Visit(blocks.Last());
         }
 
         return CymbolObject.Unit;
@@ -276,7 +286,8 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         var functionName = context.ID().GetText();
         var args = context.expr()?.Select(Visit).ToArray() ?? Enumerable.Empty<ICymbolObject>();
 
-        if (Builtins.Functions.ContainsKey(functionName)) {
+        if (Builtins.Functions.ContainsKey(functionName))
+        {
             return Builtins.Functions[functionName](args.FirstOrDefault());
         }
 
