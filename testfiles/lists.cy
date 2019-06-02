@@ -50,3 +50,17 @@ list nums = range(10);
 print(nums); 
 
 iterate(range(10), 0);
+
+int strlen = len("four");
+print(strlen);
+
+//print(len(7));
+
+list nums1 = [1, 2, 3];
+list nums2 = [4, 5, 6];
+list nums3 = concat(nums1, nums2);
+print(nums3);
+
+string hello = "hello ";
+string world = "world!";
+print(concat(hello, world));

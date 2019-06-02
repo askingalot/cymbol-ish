@@ -284,11 +284,15 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
     public override ICymbolObject VisitCall(CymbolParser.CallContext context)
     {
         var functionName = context.ID().GetText();
-        var args = context.expr()?.Select(Visit).ToArray() ?? Enumerable.Empty<ICymbolObject>();
+        var args = (context.expr()?.Select(Visit) ?? Enumerable.Empty<ICymbolObject>()).ToArray();
 
-        if (Builtins.Functions.ContainsKey(functionName))
+        if (Builtins.OneArgFunctions.ContainsKey(functionName))
         {
-            return Builtins.Functions[functionName](args.FirstOrDefault());
+            return Builtins.OneArgFunctions[functionName](args.FirstOrDefault());
+        }
+        else if (Builtins.TwoArgFunctions.ContainsKey(functionName))
+        {
+            return Builtins.TwoArgFunctions[functionName](args[0], args[1]);
         }
 
         var functionContext = _funcEnv[functionName];
