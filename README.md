@@ -8,12 +8,20 @@ Really this is just a concrete way for me to play with the concepts in the book.
 
 **Here are some random facts about _Cymbol(ish)_**
 * Most things are expressions (e.g. `if`s)
+* No `return` keyword
+* Functions return the result of the last evaluated expression
 * Variables are immutable
+* Variables and values have types
 * Available types are `int`, `string`, `bool` and `list`
-    > **NOTE** Elements in a `list` must be of the same time, but since one of the built-in types is a list you can (currently) do this:
-    ```swift
-    list mixed = [
-        [ 1, 2, 3 ],
-        [ "a", "b", "c]
-    ];
-    ```
+    * **NOTE** Elements in a `list` must be of the same type, but since `list` is a type, you can (currently) do this:
+        ```swift
+        list mixed = [
+            [ 1, 2, 3 ],
+            [ "a", "b", "c" ]
+        ];
+        ```
+* There are no loops, but there is recursion
+* ...But there's no tail recursion (yet)
+* `len()` and `range()` are built-in functions, `print()` is technically a keyword
+* Code is allowed outside of a function
+* No closures. Each scope is independent
