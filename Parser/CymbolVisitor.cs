@@ -75,6 +75,13 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitCall([NotNull] CymbolParser.CallContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>comp</c>
+	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitComp([NotNull] CymbolParser.CompContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>print</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.
 	/// </summary>

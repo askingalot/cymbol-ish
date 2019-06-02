@@ -58,10 +58,12 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(context.STRING().GetText());
     }
 
-    public override ICymbolObject VisitNegate(CymbolParser.NegateContext context) {
+    public override ICymbolObject VisitNegate(CymbolParser.NegateContext context)
+    {
         var op = context.op;
         var operandObject = Visit(context.expr());
-        switch (operandObject){
+        switch (operandObject)
+        {
             case CymbolObject<int> operand when op.Type == CymbolParser.SUB:
                 return CymbolObject.From(-operand.Value);
             case CymbolObject<bool> operand when op.Type == CymbolParser.NOT:
@@ -91,7 +93,7 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(result);
     }
 
-    public override ICymbolObject VisitRel(CymbolParser.RelContext context)
+    public override ICymbolObject VisitComp(CymbolParser.CompContext context)
     {
         var operands = context.expr().Select(Visit).ToArray();
         if (operands[0].Type != operands[1].Type)
@@ -166,6 +168,16 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
             default:
                 throw new Exception($"Unknown error ({context.Start.Line}:{context.Start.Column})");
         }
+    }
+
+    public override ICymbolObject VisitRel(CymbolParser.RelContext context)
+    {
+        var operands = context.expr().Select(Visit).Cast<CymbolObject<bool>>().ToArray();
+        var result = context.op.Type == CymbolParser.AND
+            ? operands[0].Value && operands[1].Value
+            : operands[0].Value || operands[1].Value;
+
+        return CymbolObject.From(result);
     }
 
     public override ICymbolObject VisitPrint(CymbolParser.PrintContext context)
