@@ -180,6 +180,11 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(result);
     }
 
+    public override ICymbolObject VisitParen(CymbolParser.ParenContext context)
+    {
+        return Visit(context.expr());
+    }
+
     public override ICymbolObject VisitPrint(CymbolParser.PrintContext context)
     {
         var expr = context.expr();

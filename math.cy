@@ -8,4 +8,7 @@ print(-a);
 int b = a * -1;
 print(b / 12);
 
+print(2 + 3 * 4);
+print((2 + 3) * 4);
+
 //print(400 / -0);

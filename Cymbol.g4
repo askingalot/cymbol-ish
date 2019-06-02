@@ -28,6 +28,7 @@ expr : expr op=('*'|'/') expr                     # muldiv
      | BOOL                                       # bool
      | STRING                                     # string
      | ID                                         # variable
+     | '(' expr ')'                               # paren
      ;
 
 MUL : '*'  ;
