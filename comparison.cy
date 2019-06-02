@@ -33,4 +33,11 @@ comp(true, false);
 comp(false, true);
 comp(false, false);
 
-comp("a", true);
+//comp("a", true);
+
+fun not(a) {
+    !a;
+}
+
+print(!true);
+print(!false);

@@ -96,6 +96,13 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitString([NotNull] CymbolParser.StringContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>negate</c>
+	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitNegate([NotNull] CymbolParser.NegateContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>variable</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.
 	/// </summary>

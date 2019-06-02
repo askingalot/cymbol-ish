@@ -18,6 +18,7 @@ function : 'fun' ID '(' (ID (',' ID)*)? ')' '{' (stmt ';')* '}' ;
 expr : expr op=('*'|'/') expr                     # muldiv
      | expr op=('+'|'-') expr                     # addsub
      | expr op=('<'|'>'|'<='|'>='|'=='|'!=') expr # rel
+     | op=('-'|'!') expr                          # negate
      | 'print' '(' expr? ')'                      # print
      | 'if' '(' expr ')' '{' stmts '}'  
        ('else' '{' stmts '}')?                    # if
@@ -38,6 +39,7 @@ LT  : '<'  ;
 LE  : '<=' ;
 EQ  : '==' ;
 NE  : '!=' ;
+NOT : '!'  ;
 
 INT : [0-9]+ ;
 

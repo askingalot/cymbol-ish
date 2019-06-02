@@ -58,6 +58,19 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return CymbolObject.From(context.STRING().GetText());
     }
 
+    public override ICymbolObject VisitNegate(CymbolParser.NegateContext context) {
+        var op = context.op;
+        var operandObject = Visit(context.expr());
+        switch (operandObject){
+            case CymbolObject<int> operand when op.Type == CymbolParser.SUB:
+                return CymbolObject.From(-operand.Value);
+            case CymbolObject<bool> operand when op.Type == CymbolParser.NOT:
+                return CymbolObject.From(!operand.Value);
+            default:
+                throw new Exception($"Invalid negation ({context.Start.Line}:{context.Start.Column})");
+        }
+    }
+
     public override ICymbolObject VisitMuldiv(CymbolParser.MuldivContext context)
     {
         var operands = context.expr().Select(Visit).Cast<CymbolObject<int>>().ToArray();
@@ -208,36 +221,4 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return result;
     }
 
-}
-
-
-public interface ICymbolObject
-{
-    Type Type { get; }
-    Object ObjectValue { get; }
-}
-
-public class CymbolObject<T> : ICymbolObject
-{
-    public Type Type => typeof(T);
-    public Object ObjectValue => Value;
-    public T Value { get; }
-
-    public CymbolObject(T value)
-    {
-        Value = value;
-    }
-
-}
-
-
-public static class CymbolObject
-{
-    public static CymbolObject<T> From<T>(T value)
-    {
-        return new CymbolObject<T>(value);
-    }
-
-    private static readonly CymbolObject<object> _unit = new CymbolObject<object>(null);
-    public static CymbolObject<object> Unit => _unit;
 }
