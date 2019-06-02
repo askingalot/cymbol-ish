@@ -11,7 +11,7 @@ stmt : declaration
 
 declaration : type ID '=' expr ;
 
-type : 'int' | 'bool' | 'string' ;
+type : 'int' | 'bool' | 'string'  | 'list' ;
 
 function : 'fun' ID '(' (ID (',' ID)*)? ')' '{' (stmt ';')* '}' ;
 
@@ -24,10 +24,13 @@ expr : expr op=('*'|'/') expr                     # muldiv
      | 'if' '(' expr ')' '{' stmts '}'  
        ('else' '{' stmts '}')?                    # if
      | ID '(' (expr (',' expr)*)? ')'             # call
+     | ID '[' expr ']'                            # element
+     | ID                                         # variable
      | INT                                        # int
      | BOOL                                       # bool
      | STRING                                     # string
-     | ID                                         # variable
+     | '[' expr (',' expr)* ']'                   # list
+     | '[' ']'                                    # emptyList
      | '(' expr ')'                               # paren
      ;
 

@@ -29,6 +29,7 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
             case "int" when value.Type.Name != typeof(int).Name:
             case "bool" when value.Type.Name != typeof(bool).Name:
             case "string" when value.Type.Name != typeof(string).Name:
+            case "list" when value.Type.Name != typeof(ICymbolObject[]).Name:
                 throw new Exception(
                     $"Value type doesn't match annotation {context.type().Start.Line}:{context.type().Start.Column}");
             default:
@@ -43,6 +44,26 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
         return _stack.Peek()[context.ID().GetText()];
     }
 
+    public override ICymbolObject VisitElement(CymbolParser.ElementContext context)
+    {
+        var list = _stack.Peek()[context.ID().GetText()]?.ObjectValue as ICymbolObject[];
+        if (list == null)
+        {
+            throw new Exception(
+                $"Indexing is only allowed in lists ({context.Start.Line}:{context.Start.Column})");
+        }
+
+        var index = (Visit(context.expr()) as CymbolObject<int>)?.Value;
+        if (index == null)
+        {
+            throw new Exception(
+                $"List index must be an int ({context.Start.Line}:{context.Start.Column})");
+        }
+
+        return list[index.Value];
+    }
+
+
     public override ICymbolObject VisitInt(CymbolParser.IntContext context)
     {
         return CymbolObject.From(int.Parse(context.INT().GetText().Replace("_", "")));
@@ -56,6 +77,22 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
     public override ICymbolObject VisitString(CymbolParser.StringContext context)
     {
         return CymbolObject.From(context.STRING().GetText());
+    }
+
+    public override ICymbolObject VisitList(CymbolParser.ListContext context)
+    {
+        var elements = context.expr().Select(Visit).ToArray();
+        if (!elements.Skip(1).All(el => el.Type == elements[0].Type))
+        {
+            throw new Exception(
+                $"All elements of a list must be the same type ({context.Start.Line}:{context.Start.Column})");
+        }
+        return CymbolObject.From(elements);
+    }
+
+    public override ICymbolObject VisitEmptyList(CymbolParser.EmptyListContext context)
+    {
+        return CymbolObject.From(Enumerable.Empty<ICymbolObject>().ToArray());
     }
 
     public override ICymbolObject VisitNegate(CymbolParser.NegateContext context)
@@ -189,7 +226,21 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
     {
         var expr = context.expr();
         var value = expr != null ? Visit(expr) : null;
-        Console.WriteLine(value?.ObjectValue);
+
+        switch (value?.ObjectValue)
+        {
+            case null:
+                Console.WriteLine();
+                break;
+            case ICymbolObject[] list:
+                var values = list.Select(el => el.ObjectValue.ToString());
+                Console.WriteLine($"[{ string.Join(", ", values) }]");
+                break;
+            default:
+                Console.WriteLine(value.ObjectValue);
+                break;
+        }
+
         return CymbolObject.Unit;
     }
 
@@ -237,5 +288,4 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
         return result;
     }
-
 }

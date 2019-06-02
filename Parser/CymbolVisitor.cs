@@ -96,6 +96,13 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitAddsub([NotNull] CymbolParser.AddsubContext context);
 	/// <summary>
+	/// Visit a parse tree produced by the <c>list</c>
+	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitList([NotNull] CymbolParser.ListContext context);
+	/// <summary>
 	/// Visit a parse tree produced by the <c>int</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.
 	/// </summary>
@@ -123,6 +130,13 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitPrint([NotNull] CymbolParser.PrintContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>emptyList</c>
+	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitEmptyList([NotNull] CymbolParser.EmptyListContext context);
 	/// <summary>
 	/// Visit a parse tree produced by the <c>paren</c>
 	/// labeled alternative in <see cref="CymbolParser.expr"/>.
@@ -158,4 +172,11 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitIf([NotNull] CymbolParser.IfContext context);
+	/// <summary>
+	/// Visit a parse tree produced by the <c>element</c>
+	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	/// <return>The visitor result.</return>
+	Result VisitElement([NotNull] CymbolParser.ElementContext context);
 }
