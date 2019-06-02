@@ -1,4 +1,4 @@
-print(-24);
+print(-242);
 print(-1 * 2);
 print(0 + -1);
 

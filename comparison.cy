@@ -41,3 +41,5 @@ fun not(a) {
 
 print(!true);
 print(!false);
+
+print(not(0 > 1));
