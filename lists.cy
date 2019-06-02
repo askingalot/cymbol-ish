@@ -40,8 +40,8 @@ fun iterate(lst, index) {
     if (index < len(lst)) {
         print(lst[index]);
         iterate(lst, index+1);
-    }
-}
+    };
+};
 list aList = ["this", "is", "a", "list", "of", "strings"];
 iterate(aList, 0);
 
