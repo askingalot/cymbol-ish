@@ -273,8 +273,14 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
     public override ICymbolObject VisitCall(CymbolParser.CallContext context)
     {
-        var functionContext = _funcEnv[context.ID().GetText()];
+        var functionName = context.ID().GetText();
         var args = context.expr()?.Select(Visit).ToArray() ?? Enumerable.Empty<ICymbolObject>();
+
+        if (Builtins.Functions.ContainsKey(functionName)) {
+            return Builtins.Functions[functionName](args.FirstOrDefault());
+        }
+
+        var functionContext = _funcEnv[functionName];
         var paramNames = functionContext.ID().Skip(1).Select(id => id.GetText());
 
         var env = new Dictionary<string, ICymbolObject>(

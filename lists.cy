@@ -30,5 +30,23 @@ print(one);
 list three = listoflist[2];
 print(three);
 
+print(len(three));
+
 //print(strs[1000]);
 //list bad = [true, false, "false", 2];
+
+
+fun iterate(lst, index) {
+    if (index < len(lst)) {
+        print(lst[index]);
+        iterate(lst, index+1);
+    }
+}
+list aList = ["this", "is", "a", "list", "of", "strings"];
+iterate(aList, 0);
+
+
+list nums = range(10);
+print(nums); 
+
+iterate(range(10), 0);
