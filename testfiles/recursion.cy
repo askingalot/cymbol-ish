@@ -5,7 +5,13 @@ fun count_down(num) {
     };
 };
 
+//count_down(10);
+
 fun count_up(num) {
     print(num);
-    count_up(num + 1);
+    if (num != 200) {
+        count_up(num + 1);
+    };
 };
+
+count_up(0);
