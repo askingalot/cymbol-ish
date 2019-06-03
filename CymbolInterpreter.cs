@@ -307,6 +307,11 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
 
         // This madness is a for tail recursion
         // It should probably be tested more
+
+        // FIXME Damnit...now it only does tail recursion!!!!!
+        //  TODO: ensure there are no siblings to the right of the function call
+        //        in the parse tree
+
         if (_currentFunctionName == functionName)
         {
             return new RecursionResultCymbolObject(env);
