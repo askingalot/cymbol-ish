@@ -14,5 +14,10 @@ if (b) {
     print("b is false");
 };
 
-int num = if (!true) { print("in true"); 1; } else { 2; };
+int num = if (true) { 
+        print("in true"); 
+        1; 
+    } else { 
+        2; 
+    };
 print(num);

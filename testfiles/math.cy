@@ -1,3 +1,4 @@
+/*
 print(-24_200);
 print(-1 * 2);
 print(0 + -1);
@@ -12,6 +13,13 @@ print(2 + 3 * 4);
 print((2 + 3) * 4);
 
 //print(400 / -0);
+*/
+
+fun iter(i) {
+    print(i);
+    int j = i + 2;
+    iter(j);
+};
 
 fun fib(n) {
     if (n == 0) {

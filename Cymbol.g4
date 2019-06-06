@@ -24,6 +24,7 @@ expr : expr op=('*'|'/') expr                      # muldiv
      | 'if' '(' expr ')' '{' stmts '}'  
        ('else' 'if' '(' expr ')' '{' stmts '}')*
        ('else' '{' stmts '}')?                     # if
+     | 'return' expr                               # return
      | ID '(' (expr (',' expr)*)? ')'              # call
      | ID '[' expr ']'                             # element
      | ID                                          # variable
