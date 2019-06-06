@@ -9,8 +9,6 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
     private Dictionary<string, CymbolParser.FunctionContext> _funcEnv =
         new Dictionary<string, CymbolParser.FunctionContext>();
 
-    private string _currentFunctionName = null;
-
     public CymbolInterpreter()
     {
         _stack.Push(new Dictionary<string, ICymbolObject>());
@@ -305,30 +303,10 @@ public class CymbolInterpreter : CymbolBaseVisitor<ICymbolObject>
                 (param, arg) => new KeyValuePair<string, ICymbolObject>(param, arg))
         );
 
-        // This madness is a for tail recursion
-        // It should probably be tested more
-        if (_currentFunctionName == functionName)
-        {
-            return new RecursionResultCymbolObject(env);
-        }
-        else
-        {
-            // god help me if there's ever parallel execution in this crazy language
-            _currentFunctionName = functionName;
+        _stack.Push(env);
+        var result = functionContext.stmt().Select(Visit).ToArray().Last();
+        _stack.Pop();
 
-            _stack.Push(env);
-            var result = functionContext.stmt().Select(Visit).ToArray().Last();
-            _stack.Pop();
-
-            while (result is RecursionResultCymbolObject recResult)
-            {
-                _stack.Push(recResult.Env);
-                result = functionContext.stmt().Select(Visit).ToArray().Last();
-                _stack.Pop();
-            }
-
-            _currentFunctionName = null;
-            return result;
-        }
+        return result;
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 public interface ICymbolObject
 {
@@ -19,21 +18,6 @@ public class CymbolObject<T> : ICymbolObject
     }
 
 }
-
-public class RecursionResultCymbolObject : ICymbolObject
-{
-    public Type Type => throw new NotImplementedException();
-
-    public object ObjectValue => throw new NotImplementedException();
-
-    public Dictionary<string, ICymbolObject> Env { get; }
-
-    public RecursionResultCymbolObject(Dictionary<string, ICymbolObject> env)
-    {
-        Env = env;
-    }
-}
-
 public static class CymbolObject
 {
     public static CymbolObject<T> From<T>(T value)

@@ -20,7 +20,8 @@ Really this is just a concrete way for me to play with the concepts in the book.
             [ "a", "b", "c" ]
         ];
         ```
-* There are no loops, but there is (tail) recursion
+* There are no loops, but there is recursion
+* ...But there's no tail recursion (yet)
 * `len()` and `range()` are built-in functions, `print()` is technically a keyword
 * Code is allowed outside of a function
 * No closures. Each scope is independent
